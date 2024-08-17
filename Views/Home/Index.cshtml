@@ -14,12 +14,12 @@
             <div class="col-md-6 mb-3">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input type="text" asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <span asp-validation-for="FirstName" id="firstNameError" class="text-danger"></span>
             </div>
             <div class="col-md-6 mb-3">
                 <label asp-for="LastName" class="control-label"></label>
                 <input type="text" asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                <span asp-validation-for="LastName" id="lastNameError" class="text-danger"></span>
             </div>
         </div>
 
@@ -27,7 +27,7 @@
             <div class="col-md-12 mb-3">
                 <label asp-for="Email"></label>
                 <input type="text" asp-for="Email" class="form-control">
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <span asp-validation-for="Email" id="emailError" class="text-danger"></span>
             </div>
         </div>
 
@@ -35,9 +35,9 @@
         <div class="row">
             @foreach (var option in Enum.GetValues(typeof(QueryType)))
             {
-                <div class="col-md-6 mb-3" style="color: hsl(187, 24%, 22%);">
-                    <div class="form-control">
-                        <input type="radio" asp-for="SelectQueryType" value="@option" />
+                <div class="col-md-6 mb-3">
+                    <div class="form-control btn-radio-bg">
+                        <input type="radio" asp-for="SelectQueryType" value="@option" class="btn-radio" />
                         <label>@GetEnumDisplayName(option)</label>
                     </div>
                     <span asp-validation-for="SelectQueryType" class="text-danger"></span>
@@ -63,7 +63,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary form-control">Submit</button>
+                <button type="submit" class="btn btn-custom form-control">Submit</button>
             </div>
         </div>
     </form>
@@ -95,20 +95,64 @@
 
     <script>
         $(document).ready(function () {
+            const btnRadioBg = document.querySelectorAll(".btn-radio-bg");
+            const btnRadio = document.querySelectorAll(".btn-radio");
+
+            for(let i = 0; i < btnRadio.length; i++){
+                btnRadio[i].addEventListener('click', function(){
+                    if(btnRadio[i].value == "GeneralEnquiery"){
+                        btnRadioBg[0].classList.add("radio-bg");
+                        btnRadioBg[1].classList.remove("radio-bg");
+                } else {
+                        btnRadioBg[1].classList.add("radio-bg");
+                        btnRadioBg[0].classList.remove("radio-bg");
+                }
+                })
+            }
+
             $('#contactFormElement').submit(function (event) {
                 event.preventDefault();
 
-                if ($(this).valid()) {
+                let formData = $(this).serializeArray();
+
+                const nameRegex = /^[a-zA-Z' -]{2,50}$/;
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                let isValid = true;
+
+                $('#firstNameError').text('');
+
+                $.each(formData, function(i, field) {
+                    if(field.name == "FirstName"){
+                        if (!nameRegex.test(field.value)) {
+                            $('#firstNameError').text("Please enter a valid name.");
+                            isValid = false;
+                        }
+                    }
+
+                    if(field.name == "LastName"){
+                        if (!nameRegex.test(field.value)) {
+                            $('#lastNameError').text("Please enter a valid last name.");
+                            isValid = false;
+                        }
+                    }
+
+                    if(field.name == "Email"){
+                        if (!emailRegex.test(field.value)) {
+                            $('#emailError').text("Please enter a valid email.");
+                            isValid = false;
+                        }
+                    }
+                })
+
+                if (isValid) {
                     let formData = $(this).serializeArray();
-                    console.log(formData);
+                    
                     $.ajax({
                         type: 'POST',
                         url: '@Url.Action("Index", "Home")',
                         data: formData,
                         success: function (response) {
-                            @* for(let i = 0; i < formData.length; i++) {
-                                console.log(formData[i])
-                            } *@
                             $('#modalContainer').html(response);
                             $('#successModal').modal('show');
                         },

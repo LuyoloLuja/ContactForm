@@ -32,7 +32,7 @@ public class DetailsViewModel
 
     [Required(ErrorMessage = "Please select a query type")]
     [Display(Name = "Query Type *")]
-    public QueryType SelectQueryType { get; set; }
+    public QueryType? SelectQueryType { get; set; }
 }
 
 public enum QueryType

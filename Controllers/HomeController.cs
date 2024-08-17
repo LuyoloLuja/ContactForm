@@ -26,7 +26,6 @@ public class HomeController : Controller
         if(!ModelState.IsValid && model.IsChecked == false) {
             return View(model);
         }
-        // return BadRequest(ModelState);
         return PartialView("_SuccessModal", model);
     }
 }

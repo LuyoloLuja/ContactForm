@@ -20,7 +20,10 @@ textarea:focus,
   border: none;
   outline: none;
 }
-
+input:hover, textarea:hover, .form-check-input:hover {
+  border: 1px solid hsl(169, 82%, 27%);
+  cursor: pointer;
+}
 body {
   font-family: Karla;
   background-color: hsl(148, 38%, 91%);
@@ -33,13 +36,24 @@ body {
 }
 
 .form-container {
-  width: 70%;
+  width: 60%;
   padding: 2rem;
   margin: auto;
   background-color: #fff;
   border-radius: 0.5rem;
 }
-
+.btn-custom {
+  background-color: hsl(169, 82%, 27%);
+  color: #fff;
+}
+.radio-bg {
+  background-color: hsl(148, 38%, 91%);
+  border: 1px solid  hsl(169, 82%, 27%);
+}
+.btn-custom:hover {
+  background-color: hsl(187, 24%, 22%);
+  color: #fff;
+}
 .no-resize {
   resize: none;
 }
