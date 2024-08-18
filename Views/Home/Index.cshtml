@@ -3,12 +3,10 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
-@* <div id="modalContainer"></div> *@
-<div class="modal-success">
+<div class="modal-success hidden">
     <i class="fa-regular fa-circle-check"></i>
-  <span>Message Sent!</span>
-  <p>Thanks for completing the form. We'll be in touch in touch soon!</p>
+    <span>Message Sent!</span>
+    <p>Thanks for completing the form. We'll be in touch soon!</p>
 </div>
 
 <div id="contactForm" class="form-container">
@@ -73,8 +71,8 @@
         </div>
     </form>
 </div>
-  
-  
+
+
 @functions {
     public static string GetEnumDisplayName(Object enumValue)
     {
@@ -93,87 +91,86 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            const btnRadioBg = document.querySelectorAll(".btn-radio-bg");
-            const btnRadio = document.querySelectorAll(".btn-radio");
+<script>
+    $(document).ready(function () {
+        const btnRadioBg = document.querySelectorAll(".btn-radio-bg");
+        const btnRadio = document.querySelectorAll(".btn-radio");
 
-            for(let i = 0; i < btnRadio.length; i++){
-                btnRadio[i].addEventListener('click', function(){
-                    if(btnRadio[i].value == "GeneralEnquiery"){
-                        btnRadioBg[0].classList.add("radio-bg");
-                        btnRadioBg[1].classList.remove("radio-bg");
+        for (let i = 0; i < btnRadio.length; i++) {
+            btnRadio[i].addEventListener('click', function () {
+                if (btnRadio[i].value == "GeneralEnquiery") {
+                    btnRadioBg[0].classList.add("radio-bg");
+                    btnRadioBg[1].classList.remove("radio-bg");
                 } else {
-                        btnRadioBg[1].classList.add("radio-bg");
-                        btnRadioBg[0].classList.remove("radio-bg");
+                    btnRadioBg[1].classList.add("radio-bg");
+                    btnRadioBg[0].classList.remove("radio-bg");
                 }
-                })
-            }
+            })
+@* <div id="modalContainer"></div> *@
+        }
 
-            $('#contactFormElement').submit(function (event) {
-                event.preventDefault();
+        $('#contactFormElement').submit(function (event) {
+            event.preventDefault();
 
+            let formData = $(this).serializeArray();
+
+            const nameRegex = /^[a-zA-Z' -]{2,50}$/;
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            let isValid = true;
+
+            $('#firstNameError').text('');
+
+            $.each(formData, function (i, field) {
+                if (field.name == "FirstName") {
+                    if (!nameRegex.test(field.value)) {
+                        $('#firstNameError').text("Please enter a valid name.");
+                        isValid = false;
+                    }
+                }
+
+                if (field.name == "LastName") {
+                    if (!nameRegex.test(field.value)) {
+                        $('#lastNameError').text("Please enter a valid last name.");
+                        isValid = false;
+                    }
+                }
+
+                if (field.name == "Email") {
+                    if (!emailRegex.test(field.value)) {
+                        $('#emailError').text("Please enter a valid email.");
+                        isValid = false;
+                    }
+                }
+            })
+
+            if (isValid) {
                 let formData = $(this).serializeArray();
 
-                const nameRegex = /^[a-zA-Z' -]{2,50}$/;
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-                let isValid = true;
-
-                $('#firstNameError').text('');
-
-                $.each(formData, function(i, field) {
-                    if(field.name == "FirstName"){
-                        if (!nameRegex.test(field.value)) {
-                            $('#firstNameError').text("Please enter a valid name.");
-                            isValid = false;
-                        }
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Index", "Home")',
+                    data: formData,
+                    success: function (response) {
+                        document.querySelector('.modal-success').classList.remove('hidden');
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Error status: " + status);
+                        console.log("Error: " + error);
+                        console.log("Response Text: " + xhr.responseText);
+                        alert('Error submitting form.');
                     }
-
-                    if(field.name == "LastName"){
-                        if (!nameRegex.test(field.value)) {
-                            $('#lastNameError').text("Please enter a valid last name.");
-                            isValid = false;
-                        }
-                    }
-
-                    if(field.name == "Email"){
-                        if (!emailRegex.test(field.value)) {
-                            $('#emailError').text("Please enter a valid email.");
-                            isValid = false;
-                        }
-                    }
-                })
-
-                if (isValid) {
-                    let formData = $(this).serializeArray();
-                    
-                    $.ajax({
-                        type: 'POST',
-                        url: '@Url.Action("Index", "Home")',
-                        data: formData,
-                        success: function (response) {
-                            @* $('#modalContainer').html(response); *@
-                            @* $('modal-success').modal('show'); *@
-                            let successModal = document.querySelector('.modal-success');
-                            @* successModal.classList.remove('hidden'); *@
-                        },
-                        error: function (xhr, status, error) {
-                            console.log("Error status: " + status);
-                            console.log("Error: " + error);
-                            console.log("Response Text: " + xhr.responseText);
-                            alert('Error submitting form.');
-                        }
-                    });
-                } else {
-                    console.log("Form is invalid");
-                }
-            });
+                });
+            } else {
+                console.log("Form is invalid");
+            }
         });
-    </script>
+    });
+</script>
 }
