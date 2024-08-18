@@ -4,7 +4,12 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="modalContainer"></div>
+@* <div id="modalContainer"></div> *@
+<div class="modal-success">
+    <i class="fa-regular fa-circle-check"></i>
+  <span>Message Sent!</span>
+  <p>Thanks for completing the form. We'll be in touch in touch soon!</p>
+</div>
 
 <div id="contactForm" class="form-container">
     <h2>Contact Us</h2>
@@ -153,8 +158,10 @@
                         url: '@Url.Action("Index", "Home")',
                         data: formData,
                         success: function (response) {
-                            $('#modalContainer').html(response);
-                            $('#successModal').modal('show');
+                            @* $('#modalContainer').html(response); *@
+                            @* $('modal-success').modal('show'); *@
+                            let successModal = document.querySelector('.modal-success');
+                            @* successModal.classList.remove('hidden'); *@
                         },
                         error: function (xhr, status, error) {
                             console.log("Error status: " + status);

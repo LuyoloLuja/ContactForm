@@ -34,7 +34,7 @@ body {
 .active {
   border: 2px solid hsl(148, 38%, 91%);
 }
-
+.hidden { display: none; }
 .form-container {
   width: 60%;
   padding: 2rem;
@@ -57,14 +57,20 @@ body {
 .no-resize {
   resize: none;
 }
+.modal-success {
+  width: fit-content;
+  background-color: hsl(187, 24%, 22%);
+  color: #fff;
+  border-radius: 1em;
+  padding: 1em;
+  margin: auto;
+}
+.modal-success span { margin-left: 0.5;font-weight: bold; }
+.modal-success p { font-size: 12px; }
 
-.input-validation-error {
+.input-validation-error, .field-validation-error  {
   border-color: red;
 }
-.field-validation-error {
-  color: red;
-}
-
 @media screen and (max-width: 375px) {
   .form-container {
     width: 100%;
