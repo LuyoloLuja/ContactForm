@@ -159,6 +159,7 @@
                     data: formData,
                     success: function (response) {
                         document.querySelector('.modal-success').classList.remove('hidden');
+                        
                     },
                     error: function (xhr, status, error) {
                         console.log("Error status: " + status);
@@ -169,6 +170,7 @@
                 });
             } else {
                 console.log("Form is invalid");
+                document.querySelector('.modal-success').classList.add('hidden');
             }
         });
     });

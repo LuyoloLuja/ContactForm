@@ -43,8 +43,12 @@ body {
   border-radius: 0.5rem;
 }
 .btn-custom {
-  background-color: hsl(169, 82%, 27%);
+  background-color: hwb(169 5% 51%);
   color: #fff;
+}
+.btn-custom:hover { 
+  color: #fff;
+  opacity: 0.9; 
 }
 .radio-bg {
   background-color: hsl(148, 38%, 91%);
