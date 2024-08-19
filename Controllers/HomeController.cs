@@ -37,6 +37,19 @@ public class HomeController : Controller
         return View(data);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteAll() 
+    {
+        var model = _context.Details.ToList();
+        if(model.Any()) 
+        {
+            _context.Details.RemoveRange(model);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToAction(nameof(Index));
+    }
+
     public IActionResult Delete(int id) {
         DetailsViewModel model = _context.Details.Find(id);
         if(model == null)
