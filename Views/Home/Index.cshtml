@@ -17,12 +17,12 @@
             <div class="col-md-6 mb-3">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input type="text" asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" id="firstNameError" class="text-danger"></span>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="col-md-6 mb-3">
                 <label asp-for="LastName" class="control-label"></label>
                 <input type="text" asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" id="lastNameError" class="text-danger"></span>
+                <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
         </div>
 
@@ -30,7 +30,7 @@
             <div class="col-md-12 mb-3">
                 <label asp-for="Email"></label>
                 <input type="text" asp-for="Email" class="form-control">
-                <span asp-validation-for="Email" id="emailError" class="text-danger"></span>
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
 
@@ -112,45 +112,13 @@
                     btnRadioBg[0].classList.remove("radio-bg");
                 }
             })
-@* <div id="modalContainer"></div> *@
         }
 
         $('#contactFormElement').submit(function (event) {
             event.preventDefault();
-
             let formData = $(this).serializeArray();
 
-            const nameRegex = /^[a-zA-Z' -]{2,50}$/;
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-            let isValid = true;
-
-            $('#firstNameError').text('');
-
-            $.each(formData, function (i, field) {
-                if (field.name == "FirstName") {
-                    if (!nameRegex.test(field.value)) {
-                        $('#firstNameError').text("Please enter a valid name.");
-                        isValid = false;
-                    }
-                }
-
-                if (field.name == "LastName") {
-                    if (!nameRegex.test(field.value)) {
-                        $('#lastNameError').text("Please enter a valid last name.");
-                        isValid = false;
-                    }
-                }
-
-                if (field.name == "Email") {
-                    if (!emailRegex.test(field.value)) {
-                        $('#emailError').text("Please enter a valid email.");
-                        isValid = false;
-                    }
-                }
-            })
-
-            if (isValid) {
+            if ($(this).valid()) {
                 let formData = $(this).serializeArray();
 
                 $.ajax({

@@ -34,6 +34,10 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> Users() {
         var data = await _context.Details.ToListAsync();
+        if(data == null) 
+        {
+            return NotFound();
+        }
         return View(data);
     }
 
