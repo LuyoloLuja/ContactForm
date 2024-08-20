@@ -1,0 +1,34 @@
+# Ignore the build output directories
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.sln.docstates
+
+# Ignore package files
+*.nupkg
+*.snupkg
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.swp
+
+# Ignore environment-specific configuration
+appsettings.Development.json
+
+# Ignore the git directory
+.git/
+.gitignore
+
+# Ignore other IDE-specific files
+.vscode/
+.idea/
+
+# Ignore Docker files
+Dockerfile
+.dockerignore
+
+# Ignore any other unwanted files or directories
