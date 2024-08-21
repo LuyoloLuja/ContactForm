@@ -27,7 +27,7 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 # Expose the port the application will run on
-EXPOSE 80
+EXPOSE 8080
 
 # Define the entry point for the container
 ENTRYPOINT ["dotnet", "ContactForm.dll"]
