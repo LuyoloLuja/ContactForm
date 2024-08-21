@@ -7,11 +7,13 @@ public class DetailsViewModel
     [Required]
     public int Id { get; set; }
 
+    [Display(Name = "First Name *")]
     [Required(ErrorMessage = "First name is required.")]
     [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
     [RegularExpression(@"^[a-zA-Z' -]{2,50}$", ErrorMessage = "Please enter a valid first name.")]
     public string FirstName { get; set; }
 
+    [Display(Name = "Last Name *")]
     [Required(ErrorMessage = "Last name is required.")]
     [StringLength(50, ErrorMessage = "Last name cannot be longer than 50 characters.")]
     [RegularExpression(@"^[a-zA-Z' -]{2,50}$", ErrorMessage = "Please enter a valid last name.")]
