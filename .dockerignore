@@ -1,6 +1,44 @@
+# Ignore build outputs
 bin/
 obj/
-.git/
-.vs/
+
+# Ignore user-specific files
+*.swp
+*.csproj.user
+*.suo
+*.user
+*.rsuser
+*.sln.docstates
+
+# Ignore ASP.NET temporary files
 .vscode/
+.vs/
+.idea/
+_ReSharper.Caches/
+*.sln.cache
+*.sln.ide
+
+# Ignore logs and databases
+*.log
+*.sql
+*.sqlite
+*.db
+
+# Ignore configuration and environment files
+.env
+secrets.json
+
+# Ignore Git files
+.git/
+.gitignore
+.gitattributes
+
+# Ignore package management files
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore any other IDE specific files and directories
+.DS_Store
+Thumbs.db
