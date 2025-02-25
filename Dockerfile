@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the .csproj file and restore any dependencies
+# Copy the .csproj file and restore dependencies
 COPY *.csproj ./
 RUN dotnet restore
 
@@ -25,6 +25,15 @@ WORKDIR /app
 
 # Copy the published application from the build stage
 COPY --from=build /app/publish .
+
+# Ensure the data directory exists inside the container
+RUN mkdir -p /app/data
+
+# Copy SQLite database (if it exists locally)
+COPY --from=build /app/data /app/data
+
+# Set correct permissions for SQLite
+RUN chmod -R 777 /app/data
 
 # Expose the port the application will run on
 EXPOSE 8080
