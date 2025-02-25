@@ -29,10 +29,13 @@ COPY --from=build /app/publish .
 # Ensure the data directory exists inside the container
 RUN mkdir -p /app/data
 
-# Copy SQLite database (if it exists locally)
-COPY --from=build /app/data /app/data
+# Set environment variable for SQLite in Docker
+ENV SQLITE_DB_PATH="Data Source=/app/data/ContactFormDb.db"
 
-# Set correct permissions for SQLite
+# Make SQLite database storage persistent
+VOLUME ["/app/data"]
+
+# Ensure SQLite has correct permissions
 RUN chmod -R 777 /app/data
 
 # Expose the port the application will run on

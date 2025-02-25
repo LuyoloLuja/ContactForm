@@ -2,12 +2,21 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Get the environment variable (set in Dockerfile)
+var sqliteDbPath = Environment.GetEnvironmentVariable("SQLITE_DB_PATH");
+
+// Set default SQLite path for local development
+if (string.IsNullOrEmpty(sqliteDbPath))
+{
+    sqliteDbPath = "Data Source=ContactFormDb.db"; // Local development
+}
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Register the dabase context - SQLite
+// Register the database context - SQLite
 builder.Services.AddDbContext<ContactFormDbContext>(options =>
-options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(sqliteDbPath));
 
 var app = builder.Build();
 
@@ -15,15 +24,13 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseHsts(); // HSTS for production
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
