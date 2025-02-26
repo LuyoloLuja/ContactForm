@@ -20,6 +20,13 @@ builder.Services.AddDbContext<ContactFormDbContext>(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ContactFormDbContext>();
+    dbContext.Database.Migrate();
+}
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
